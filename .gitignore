@@ -1,0 +1,4 @@
+kernel.o
+boot.o
+kernel
+os.iso
