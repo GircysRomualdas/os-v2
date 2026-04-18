@@ -4,9 +4,9 @@ clean:
 	rm -rf *.o
 
 kernel:
-	gcc -m32 -fno-stack-protector -fno-builtin -c kernel.c -o kernel.o
-	gcc -m32 -fno-stack-protector -fno-builtin -c vga.c -o vga.o
-	gcc -m32 -fno-stack-protector -fno-builtin -c gdt.c -o gdt.o
+	gcc -g -m32 -fno-stack-protector -fno-builtin -c kernel.c -o kernel.o
+	gcc -g -m32 -fno-stack-protector -fno-builtin -c vga.c -o vga.o
+	gcc -g -m32 -fno-stack-protector -fno-builtin -c gdt.c -o gdt.o
 
 boot:
 	nasm -f elf32 boot.asm -o boot.o
