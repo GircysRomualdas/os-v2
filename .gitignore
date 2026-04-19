@@ -1,4 +1,3 @@
-kernel.o
-boot.o
+*.o
+*.iso
 kernel
-os.iso
