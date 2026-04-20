@@ -1,4 +1,5 @@
-cflags = -m32 -fno-stack-protector -fno-builtin
+gcc = /usr/opt/cross/bin/i686-elf-gcc
+cflags = -ffreestanding -Wall -Wextra -g -O2
 
 all: clean kernel boot image
 
@@ -6,11 +7,11 @@ clean:
 	rm -rf *.o
 
 kernel:
-	gcc $(cflags) -c src/kernel.c -o kernel.o
-	gcc $(cflags) -c src/vga.c -o vga.o
-	gcc $(cflags) -c src/gdt.c -o gdt.o
-	gcc $(cflags) -c src/util.c -o util.o
-	gcc $(cflags) -c src/interrupts/idt.c -o idt.o
+	$(gcc) $(cflags) -c src/kernel.c -o kernel.o
+	$(gcc) $(cflags) -c src/vga.c -o vga.o
+	$(gcc) $(cflags) -c src/gdt.c -o gdt.o
+	$(gcc) $(cflags) -c src/util.c -o util.o
+	$(gcc) $(cflags) -c src/interrupts/idt.c -o idt.o
 
 boot:
 	nasm -f elf32 src/boot.asm -o boot.o

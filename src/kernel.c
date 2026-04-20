@@ -8,5 +8,6 @@ void kmain(void) {
   initGdt();
   print("GDT is done!\r\n");
   initIdt();
-  print(1/0);
+  
+  for(;;);
 }
