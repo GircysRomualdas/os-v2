@@ -1,4 +1,5 @@
 #include "gdt.h"
+
 #include "stdint.h"
 #include "util.h"
 
@@ -25,7 +26,8 @@ void initGdt() {
   tss_flush();
 }
 
-void setGdtGate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
+void setGdtGate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access,
+                uint8_t gran) {
   gdt_entries[num].base_low = (base & 0xFFFF);
   gdt_entries[num].base_middle = (base >> 16) & 0xFF;
   gdt_entries[num].base_high = (base >> 24) & 0xFF;
@@ -37,7 +39,7 @@ void setGdtGate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access, uin
 }
 
 void writeTSS(uint32_t num, uint16_t ss0, uint32_t esp0) {
-  uint32_t base = (uint32_t) &tss_entry;
+  uint32_t base = (uint32_t)&tss_entry;
   uint32_t limit = base + sizeof(tss_entry);
 
   setGdtGate(num, base, limit, 0xE9, 0x00);
@@ -45,7 +47,8 @@ void writeTSS(uint32_t num, uint16_t ss0, uint32_t esp0) {
 
   tss_entry.ss0 = ss0;
   tss_entry.esp0 = esp0;
-  
+
   tss_entry.cs = 0x08 | 0x3;
-  tss_entry.ss = tss_entry.ds = tss_entry.es = tss_entry.fs = tss_entry.gs = 0x10 | 0x3;
+  tss_entry.ss = tss_entry.ds = tss_entry.es = tss_entry.fs = tss_entry.gs =
+      0x10 | 0x3;
 }

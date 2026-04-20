@@ -1,7 +1,7 @@
 #include "timer.h"
-#include "util.h"
-#include "stdint.h"
 #include "interrupts/idt.h"
+#include "stdint.h"
+#include "util.h"
 #include "vga.h"
 
 uint64_t ticks;
@@ -18,7 +18,7 @@ void initTimer() {
   outPortB(0x40, (uint8_t)((divisor >> 8) & 0xFF));
 }
 
-void onIrq0(struct InterruptRegisters *regs){
+void onIrq0(struct InterruptRegisters *regs) {
   ticks += 1;
   print("Timer ticked!");
 }

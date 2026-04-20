@@ -3,36 +3,36 @@
 
 uint16_t column = 0;
 uint16_t line = 0;
-uint16_t* const vga = (uint16_t* const) 0xB8000;  
+uint16_t *const vga = (uint16_t *const)0xB8000;
 const uint16_t defaultColor = (COLOR8_LIGHT_GREY << 8) | (COLOR8_BLACK << 12);
 uint16_t currentColor = defaultColor;
 
-void print(const char* s) {
+void print(const char *s) {
   while (*s) {
     switch (*s) {
-      case '\n':
+    case '\n':
+      newLine();
+      break;
+    case '\r':
+      column = 0;
+      break;
+    case '\t':
+      if (column == width) {
         newLine();
-        break;
-      case '\r':
-        column = 0;
-        break;
-      case '\t':
-        if (column == width) {
-          newLine();
-        }
-        uint16_t tabLen = 4 - (column % 4);
-        while (tabLen != 0) {
-          vga[line * width + (column++)] = ' ' | currentColor;
-          tabLen--;
-        }
-        break;
-      default:
-        if (column == width) {
-          newLine();
-        }
+      }
+      uint16_t tabLen = 4 - (column % 4);
+      while (tabLen != 0) {
+        vga[line * width + (column++)] = ' ' | currentColor;
+        tabLen--;
+      }
+      break;
+    default:
+      if (column == width) {
+        newLine();
+      }
 
-        vga[line * width + (column++)] = *s | currentColor;
-        break;
+      vga[line * width + (column++)] = *s | currentColor;
+      break;
     }
     s++;
   }
@@ -60,7 +60,7 @@ void newLine() {
   }
 }
 
-void Reset(){
+void Reset() {
   line = 0;
   column = 0;
   currentColor = defaultColor;

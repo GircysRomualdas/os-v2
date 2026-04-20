@@ -1,7 +1,7 @@
-#include "vga.h"
 #include "gdt.h"
 #include "interrupts/idt.h"
 #include "timer.h"
+#include "vga.h"
 
 void kmain(void);
 
@@ -10,6 +10,7 @@ void kmain(void) {
   print("GDT is done!\r\n");
   initIdt();
   initTimer();
-  
-  for(;;);
+
+  for (;;)
+    ;
 }

@@ -1,5 +1,6 @@
 gcc = /usr/opt/cross/bin/i686-elf-gcc
-cflags = -ffreestanding -Wall -Wextra -g -O2
+ld = /usr/opt/cross/bin/i686-elf-ld
+cflags = -ffreestanding -std=gnu17 -Wall -Wextra -g -O2
 
 all: clean kernel boot image
 
@@ -13,6 +14,7 @@ kernel:
 	$(gcc) $(cflags) -c src/util.c -o util.o
 	$(gcc) $(cflags) -c src/interrupts/idt.c -o idt.o
 	$(gcc) $(cflags) -c src/timer.c -o timer.o
+	$(gcc) $(cflags) -c src/stdlib/stdio.c -o stdio.o
 
 boot:
 	nasm -f elf32 src/boot.asm -o boot.o
@@ -20,7 +22,7 @@ boot:
 	nasm -f elf32 src/interrupts/idt.asm -o idt_asm.o
 
 image:
-	ld -m elf_i386 -T linker.ld -o kernel \
+	$(ld) -m elf_i386 -T linker.ld -o kernel \
 		boot.o \
 		kernel.o \
 		vga.o \
@@ -29,7 +31,8 @@ image:
 		util.o \
 		idt.o \
 		idt_asm.o \
-		timer.o
+		timer.o \
+		stdio.o
 	mv kernel os/boot/kernel
 	grub-mkrescue -o os.iso os/
 	rm *.o
