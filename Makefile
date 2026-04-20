@@ -12,6 +12,7 @@ kernel:
 	$(gcc) $(cflags) -c src/gdt.c -o gdt.o
 	$(gcc) $(cflags) -c src/util.c -o util.o
 	$(gcc) $(cflags) -c src/interrupts/idt.c -o idt.o
+	$(gcc) $(cflags) -c src/timer.c -o timer.o
 
 boot:
 	nasm -f elf32 src/boot.asm -o boot.o
@@ -27,7 +28,8 @@ image:
 		gdt_asm.o \
 		util.o \
 		idt.o \
-		idt_asm.o
+		idt_asm.o \
+		timer.o
 	mv kernel os/boot/kernel
 	grub-mkrescue -o os.iso os/
 	rm *.o
