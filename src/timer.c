@@ -18,7 +18,4 @@ void initTimer() {
   outPortB(0x40, (uint8_t)((divisor >> 8) & 0xFF));
 }
 
-void onIrq0(struct InterruptRegisters *regs) {
-  ticks += 1;
-  print("Timer ticked!");
-}
+void onIrq0(struct InterruptRegisters *regs) { ticks += 1; }

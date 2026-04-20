@@ -3,8 +3,8 @@ BITS 32
 section .text
   align 4
   dd 0x1badb002
-  dd 0x00000000
-  dd -(0x1badb002 + 0x00000000)
+  dd 0x00000003
+  dd -(0x1BADB002 + 0x00000003)
 
 global start
 extern kmain

@@ -39,6 +39,7 @@ void printf(const char *fmt, ...) {
         goto PRINTF_STATE_SPEC_;
       }
       break;
+      // hd
     case PRINTF_STATE_SHORT:
       if (*fmt == 'h') {
         length = PRINTF_LENGTH_SHORT_SHORT;
@@ -47,6 +48,7 @@ void printf(const char *fmt, ...) {
         goto PRINTF_STATE_SPEC_;
       }
       break;
+
     case PRINTF_STATE_LONG:
       if (*fmt == 'l') {
         length = PRINTF_LENGTH_LONG_LONG;

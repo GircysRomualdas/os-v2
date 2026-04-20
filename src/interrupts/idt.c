@@ -10,7 +10,7 @@ struct idt_ptr_struct idt_ptr;
 
 void initIdt() {
   idt_ptr.limit = sizeof(struct idt_entry_struct) * 256 - 1;
-  idt_ptr.base = (uint32_t) &idt_entries;
+  idt_ptr.base = (uint32_t)&idt_entries;
 
   memset(&idt_entries, 0, sizeof(struct idt_entry_struct) * 256);
 
@@ -20,8 +20,8 @@ void initIdt() {
   outPortB(0x21, 0x20);
   outPortB(0xA1, 0x28);
 
-  outPortB(0x21,0x04);
-  outPortB(0xA1,0x02);
+  outPortB(0x21, 0x04);
+  outPortB(0xA1, 0x02);
 
   outPortB(0x21, 0x01);
   outPortB(0xA1, 0x01);
@@ -29,10 +29,10 @@ void initIdt() {
   outPortB(0x21, 0x0);
   outPortB(0xA1, 0x0);
 
-  setIdtGate(0, (uint32_t)isr0,0x08, 0x8E);
-  setIdtGate(1, (uint32_t)isr1,0x08, 0x8E);
-  setIdtGate(2, (uint32_t)isr2,0x08, 0x8E);
-  setIdtGate(3, (uint32_t)isr3,0x08, 0x8E);
+  setIdtGate(0, (uint32_t)isr0, 0x08, 0x8E);
+  setIdtGate(1, (uint32_t)isr1, 0x08, 0x8E);
+  setIdtGate(2, (uint32_t)isr2, 0x08, 0x8E);
+  setIdtGate(3, (uint32_t)isr3, 0x08, 0x8E);
   setIdtGate(4, (uint32_t)isr4, 0x08, 0x8E);
   setIdtGate(5, (uint32_t)isr5, 0x08, 0x8E);
   setIdtGate(6, (uint32_t)isr6, 0x08, 0x8E);
@@ -80,7 +80,7 @@ void initIdt() {
   setIdtGate(47, (uint32_t)irq15, 0x08, 0x8E);
 
   setIdtGate(128, (uint32_t)isr128, 0x08, 0x8E);
-  setIdtGate(177, (uint32_t)isr177, 0x08, 0x8E); 
+  setIdtGate(177, (uint32_t)isr177, 0x08, 0x8E);
 
   idt_flush((uint32_t)&idt_ptr);
 }
@@ -93,64 +93,61 @@ void setIdtGate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags) {
   idt_entries[num].flags = flags | 0x60;
 }
 
-unsigned char* exception_messages[] = {
-  "Division By Zero",
-  "Debug",
-  "Non Maskable Interrupt",
-  "Breakpoint",
-  "Into Detected Overflow",
-  "Out of Bounds",
-  "Invalid Opcode",
-  "No Coprocessor",
-  "Double fault",
-  "Coprocessor Segment Overrun",
-  "Bad TSS",
-  "Segment not present",
-  "Stack fault",
-  "General protection fault",
-  "Page fault",
-  "Unknown Interrupt",
-  "Coprocessor Fault",
-  "Alignment Fault",
-  "Machine Check", 
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved"
-};
+char *exception_messages[] = {"Division By Zero",
+                              "Debug",
+                              "Non Maskable Interrupt",
+                              "Breakpoint",
+                              "Into Detected Overflow",
+                              "Out of Bounds",
+                              "Invalid Opcode",
+                              "No Coprocessor",
+                              "Double fault",
+                              "Coprocessor Segment Overrun",
+                              "Bad TSS",
+                              "Segment not present",
+                              "Stack fault",
+                              "General protection fault",
+                              "Page fault",
+                              "Unknown Interrupt",
+                              "Coprocessor Fault",
+                              "Alignment Fault",
+                              "Machine Check",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved",
+                              "Reserved"};
 
-void isr_handler(struct InterruptRegisters* regs) {
+void isr_handler(struct InterruptRegisters *regs) {
   if (regs->int_no < 32) {
     print(exception_messages[regs->int_no]);
     print("\n");
     print("Exception! System Halted\n");
-    for (;;);
+    for (;;)
+      ;
   }
 }
 
 void *irq_routines[16] = {
-  0,0,0,0 ,0,0,0,0,
-  0,0,0,0 ,0,0,0,0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-void irq_install_handler(int irq, void (*handler)(struct InterruptRegisters *r)) {
+void irq_install_handler(int irq,
+                         void (*handler)(struct InterruptRegisters *r)) {
   irq_routines[irq] = handler;
 }
 
-void irq_uninstall_handler(int irq) {
-  irq_routines[irq] = 0;
-}
+void irq_uninstall_handler(int irq) { irq_routines[irq] = 0; }
 
-void irq_handler(struct InterruptRegisters* regs) {
+void irq_handler(struct InterruptRegisters *regs) {
   void (*handler)(struct InterruptRegisters *regs);
   handler = irq_routines[regs->int_no - 32];
 
