@@ -16,6 +16,7 @@ kernel:
 	$(gcc) $(cflags) -c src/timer.c -o timer.o
 	$(gcc) $(cflags) -c src/stdlib/stdio.c -o stdio.o
 	$(gcc) $(cflags) -c src/keyboard.c -o keyboard.o
+	$(gcc) $(cflags) -c src/memory.c -o memory.o
 
 boot:
 	nasm -f elf32 src/boot.asm -o boot.o
@@ -34,7 +35,8 @@ image:
 		idt_asm.o \
 		timer.o \
 		stdio.o \
-		keyboard.o
+		keyboard.o \
+		memory.o
 	mv kernel os/boot/kernel
 	grub-mkrescue -o os.iso os/
 	rm *.o
