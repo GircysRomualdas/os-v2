@@ -14,7 +14,7 @@ void kmain(uint32_t magic, struct multiboot_info *bootInfo) {
   initIdt();
   initTimer();
   initKeyboard();
-  initMemory(bootInfo);
+  // initMemory(bootInfo);
 
   for (;;)
     ;
