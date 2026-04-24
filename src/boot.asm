@@ -45,6 +45,7 @@ section .text
 higher_half:
   mov esp, stack_top
   push ebx
+  push eax
   xor ebp, ebp
   extern kmain
   call kmain

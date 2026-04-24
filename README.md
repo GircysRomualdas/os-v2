@@ -4,7 +4,18 @@
 
 ## Requirements
 
+- Bochs
+
+```bash
+cd ~/Downloads
+tar -xvf bochs-2.8.tar.gz
+sudo apt-get update
+sudo apt-get install bochs bochs-x
 ```
+
+Update `bochsrc`: set `romimage` and `vgaromimage` to your local Bochs BIOS paths.
+
+```bash
 sudo apt-get update
 sudo apt-get install \
   nasm \

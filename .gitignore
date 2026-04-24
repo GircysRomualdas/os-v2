@@ -1,3 +1,4 @@
 *.o
 *.iso
 kernel
+bx_enh_dbg.ini
