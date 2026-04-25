@@ -17,6 +17,7 @@ kernel:
 	$(gcc) $(cflags) -c src/stdlib/stdio.c -o stdio.o
 	$(gcc) $(cflags) -c src/keyboard.c -o keyboard.o
 	$(gcc) $(cflags) -c src/memory.c -o memory.o
+	$(gcc) $(cflags) -c src/kmalloc.c -o kmalloc.o
 
 boot:
 	nasm -f elf32 src/boot.asm -o boot.o
@@ -36,7 +37,8 @@ image:
 		timer.o \
 		stdio.o \
 		keyboard.o \
-		memory.o
+		memory.o \
+		kmalloc.o
 	mv kernel os/boot/kernel
 	grub-mkrescue -o os.iso os/
 	rm *.o
